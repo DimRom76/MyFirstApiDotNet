@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
 namespace MyFirstApi.Controllers
@@ -40,19 +41,22 @@ namespace MyFirstApi.Controllers
 
 
         [HttpPost]
-        public ActionResult<string> Post([FromBody] string newProduct)
+        public ActionResult<string> Post(
+            [FromBody, Required, StringLength(100, MinimumLength = 2)] string newProduct)
         {
             return $"Added: {newProduct}";
         }
 
         [HttpPut("{id}")]
-        public ActionResult<string> Put(int id, [FromBody] string updatedProduct)
+        public ActionResult<string> Put(
+            [Range(1, int.MaxValue)] int id,
+            [FromBody, Required, StringLength(100, MinimumLength = 2)] string updatedProduct)
         {
             return $"Updated product {id} to: {updatedProduct}";
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<string> Delete(int id)
+        public ActionResult<string> Delete([Range(1, int.MaxValue)] int id)
         {
             return $"Deleted product with ID: {id}";
         }
